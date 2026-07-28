@@ -25,8 +25,8 @@ public class loginPageEvents extends BaseTest{
         click(loginPageElements.btnDelete);
         logger.info("Validate User Deleted");
 
-        //Uncomment to see the Prof of Deletion
-        // click(loginPageElements.btmContinue);
+        // Uncomment to see the Prof of Deletion
+        // click(loginPageElements.btnContinue);
         // logger.info("Account Deleted");
     }
 
