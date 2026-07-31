@@ -1,13 +1,13 @@
 package pageObjects;
 
 public interface loginPageElements {
-    
-    //Sign-on Tab
+    // Sign-on Tab
     String txtEmail = "//input[@data-qa='login-email']";
     String txtPassword = "//input[@placeholder='Password']";
     String btnSubmit = "//button[normalize-space()='Login']";
-    String btnDelete = "//a[normalize-space()='Delete Account']";
-    String btnContinue = "//a[normalize-space()='Continue']";
-    String btnLogout = "//a[normalize-space()='Logout']";
-
+    
+    // Robust href matching for navbar actions
+    String btnDelete = "//a[@href='/delete_account']";
+    String btnContinue = "//a[@data-qa='continue-button' or contains(text(),'Continue')]";
+    String btnLogout = "//a[@href='/logout']";
 }
