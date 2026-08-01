@@ -22,4 +22,6 @@ public interface cartPageElements {
     String btnDownloadInvoice = "//a[normalize-space()='Download Invoice']";
     String txtDeliveryAddress = "//ul[@id='address_delivery']//li[contains(@class,'address_address1')]";
     String txtBillingAddress = "//ul[@id='address_invoice']//li[contains(@class,'address_address1')]";
+
+    String CART_URL_ENDPOINT = "view_cart";
 }

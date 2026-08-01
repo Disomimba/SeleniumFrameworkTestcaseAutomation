@@ -59,4 +59,9 @@ public class loginPageEvents extends BaseTest {
         }
         logger.info("Account Logged Out");
     }
+
+    public void clickDeleteButton() {
+        logger.info("Clicking on Delete Button");
+        click(pageObjects.loginPageElements.btnDelete);
+    }
 }

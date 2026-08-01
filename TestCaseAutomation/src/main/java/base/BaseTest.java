@@ -161,7 +161,7 @@ import utils.ElementFetch;
 	        options.addArguments("disable-infobars");
 	        options.addArguments("--disable-extensions");
 	        options.setCapability("acceptInsecureCerts",true);
-			WebDriverManager.chromedriver().setup();
+			// WebDriverManager.chromedriver().setup();
 			driver= new ChromeDriver(options);
 			break;
 			
@@ -187,22 +187,22 @@ import utils.ElementFetch;
 	        options.addArguments("disable-infobars");
 	        options.addArguments("--disable-extensions");
 	        options.setCapability("acceptInsecureCerts",true);
-			WebDriverManager.chromedriver().setup();
+			// WebDriverManager.chromedriver().setup();
 			driver= new ChromeDriver(options);
 			break;
 			
 		case "firefox":
-			WebDriverManager.firefoxdriver().setup();
+			// WebDriverManager.firefoxdriver().setup();
 			driver= new FirefoxDriver();
 			break;
 			
 		case "edge":
-			WebDriverManager.edgedriver().setup();
+			// WebDriverManager.edgedriver().setup();
 			driver= new EdgeDriver();
 			break;
 			
 		default:
-			WebDriverManager.chromedriver().setup();
+			// WebDriverManager.chromedriver().setup();
 			driver= new ChromeDriver();
 			break;
 		}
@@ -251,13 +251,13 @@ import utils.ElementFetch;
 
 	public void click(String webElement) {
 	  
-	try {
-		ele.getXPATHWebElement(webElement).click();
-	}catch (Exception e) {
-		WebElement element = driver.findElement(By.xpath(webElement));
-		((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+		try {
+			ele.getXPATHWebElement(webElement).click();
+		}catch (Exception e) {
+			WebElement element = driver.findElement(By.xpath(webElement));
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
 
-	}
+		}
 	
 	}
 	

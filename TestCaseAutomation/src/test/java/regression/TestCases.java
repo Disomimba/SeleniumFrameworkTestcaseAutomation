@@ -33,7 +33,8 @@ public class TestCases extends BaseTest {
 
     @BeforeTest(alwaysRun = true)
     @Parameters({"browser"})
-    public void prepareReport(@Optional("chrome") String browser) {
+    // public void prepareReport(@Optional("chrome") String browser) {
+    public void prepareReport(@Optional("edge") String browser) {
         this.browser = browser;
         beforeTestMethod(browser);
     }
@@ -182,7 +183,7 @@ public class TestCases extends BaseTest {
 
         tc_01_Register();
         mainPage.clickCartTab();
-        Assert.assertTrue(driver.getCurrentUrl().contains("view_cart"), "Cart page not loaded after login");
+        cartPageEvents.verifyCartPageLoaded();
     }
 
     @Test(priority = 21)
@@ -193,8 +194,8 @@ public class TestCases extends BaseTest {
     @Test(priority = 22)
     public void tc_22_addToCartFromRecommendedItems() {
         mainPage.addRecommendedItemToCart();
-        click(pageObjects.productsPageElements.btnViewCart);
-        Assert.assertTrue(driver.getCurrentUrl().contains("view_cart"), "Cart page not loaded");
+        products.clickViewCartButton();
+        cartPageEvents.verifyCartPageLoaded();
     }
 
     @Test(priority = 23)
@@ -202,10 +203,10 @@ public class TestCases extends BaseTest {
         tc_01_Register();
         products.addToCart();
         mainPage.clickCartTab();
-        click(cartPageElements.btnProceedToCheckout);
+        cartPageEvents.clickViewCartButton();
 
         cartPageEvents.verifyAddressDetailsMatch("123 Test Way");
-        click(pageObjects.loginPageElements.btnDelete);
+        loginPage.clickDeleteButton();
     }
 
     @Test(priority = 24)
@@ -213,25 +214,13 @@ public class TestCases extends BaseTest {
         tc_01_Register();
         products.addToCart();
         mainPage.clickCartTab();
-        click(cartPageElements.btnProceedToCheckout);
 
-        clear(cartPageElements.txtDescription);
-        sendKeys(cartPageElements.txtDescription, "Order for Invoice Test");
-        click(cartPageElements.btnPlaceOrder);
-        clear(cartPageElements.txtNameOnCard);
-        sendKeys(cartPageElements.txtNameOnCard, "Test Card");
-        clear(cartPageElements.txtCardNumber);
-        sendKeys(cartPageElements.txtCardNumber, "4100000000000000");
-        clear(cartPageElements.txtCVC);
-        sendKeys(cartPageElements.txtCVC, "123");
-        clear(cartPageElements.txtExpiryMonth);
-        sendKeys(cartPageElements.txtExpiryMonth, "01");
-        clear(cartPageElements.txtExpiryYear);
-        sendKeys(cartPageElements.txtExpiryYear, "2030");
-        click(cartPageElements.btnSubmitOrder);
+        cartPageEvents.clickProceedToCheckout();
+        cartPageEvents.enterCommentAndPlaceOrder("Order for Invoice Test");
+        cartPageEvents.enterPaymentDetailsAndSubmit("Test Card", "4100000000000000", "123", "01", "2030");
 
         cartPageEvents.downloadInvoice();
-        click(pageObjects.loginPageElements.btnDelete);
+        loginPage.deleteAccount(); 
     }
 
     @Test(priority = 25)

@@ -130,4 +130,9 @@ public class productsEventPage extends BaseTest {
         assertElementIsDisplayed(productsPageElements.txtReviewSuccessMsg);
         logger.info("Review submitted successfully");
     }
+
+    public void clickViewCartButton() {
+        logger.info("Clicking on View Cart button");
+        click(pageObjects.productsPageElements.btnViewCart);
+    }
 }

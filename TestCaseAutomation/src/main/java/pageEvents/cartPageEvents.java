@@ -39,4 +39,50 @@ public class cartPageEvents extends BaseTest {
         assertElementIsDisplayed(cartPageElements.btnDownloadInvoice);
         click(cartPageElements.btnDownloadInvoice);
     }
+    
+    public void verifyCartPageLoaded() {
+        Assert.assertTrue(BaseTest.driver.getCurrentUrl().contains(cartPageElements.CART_URL_ENDPOINT), "Cart page not loaded after login");
+    }
+
+    public void clickViewCartButton() {
+        logger.info("Clicking on Checkout Button");
+        click(pageObjects.cartPageElements.btnProceedToCheckout);
+    }
+
+    public void clickProceedToCheckout() {
+        logger.info("Clicking Proceed to Checkout button");
+        click(cartPageElements.btnProceedToCheckout);
+    }
+
+    public void enterCommentAndPlaceOrder(String description) {
+        logger.info("Entering order description: " + description);
+        clear(cartPageElements.txtDescription);
+        sendKeys(cartPageElements.txtDescription, description);
+        click(cartPageElements.btnPlaceOrder);
+    }
+
+    public void enterPaymentDetailsAndSubmit(String name, String cardNumber, String cvc, String expMonth,
+            String expYear) {
+        logger.info("Entering payment details for card ending in: " + cardNumber.substring(cardNumber.length() - 4));
+
+        clear(cartPageElements.txtNameOnCard);
+        sendKeys(cartPageElements.txtNameOnCard, name);
+
+        clear(cartPageElements.txtCardNumber);
+        sendKeys(cartPageElements.txtCardNumber, cardNumber);
+
+        clear(cartPageElements.txtCVC);
+        sendKeys(cartPageElements.txtCVC, cvc);
+
+        clear(cartPageElements.txtExpiryMonth);
+        sendKeys(cartPageElements.txtExpiryMonth, expMonth);
+
+        clear(cartPageElements.txtExpiryYear);
+        sendKeys(cartPageElements.txtExpiryYear, expYear);
+
+        logger.info("Submitting order");
+        click(cartPageElements.btnSubmitOrder);
+    }
+
+
 }
