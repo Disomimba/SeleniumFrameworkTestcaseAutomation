@@ -11,16 +11,27 @@ public class cartPageEvents extends BaseTest {
     ElementFetch ele = new ElementFetch();
 
     public void subscribe(String email) {
-        mainPage.clickCartTab();
+        
+        mainPage.verifyPageUrl("home");
+ 
+        mainPage.clickTab("cart");
+        logger.info("Navigated to Cart Page");
+        logger.info("Scrolled down to the footer");
+
+        assertElementIsDisplayed("//h2[normalize-space()='Subscription']");
+        logger.info("Verified text 'SUBSCRIPTION' is visible in the footer");
+
+        logger.info("Subscribing with email: " + email);
         clear(cartPageElements.txtSubscribe);
         sendKeys(cartPageElements.txtSubscribe, email);
-
         click(cartPageElements.btnSubscribe);
-        logger.info("Subscribed");
+        
+        assertElementIsDisplayed("//div[contains(text(), 'You have been successfully subscribed!')]");
+        logger.info("Verified success message 'You have been successfully subscribed!' is visible");
     }
 
     public void removeProductFromCart() {
-        mainPage.clickCartTab();
+        mainPage.clickTab("cart");
         logger.info("Removing product from cart");
         click(cartPageElements.btnRemoveProduct);
     }
@@ -49,6 +60,10 @@ public class cartPageEvents extends BaseTest {
         click(pageObjects.cartPageElements.btnProceedToCheckout);
     }
 
+    public void clickRegisterLoginButton() {
+        logger.info("Clicking on Register/Login Button");
+        click(cartPageElements.btnRegisterLogin);
+    }
     public void clickProceedToCheckout() {
         logger.info("Clicking Proceed to Checkout button");
         click(cartPageElements.btnProceedToCheckout);

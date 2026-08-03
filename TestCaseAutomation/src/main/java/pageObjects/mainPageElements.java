@@ -22,4 +22,6 @@ public interface mainPageElements {
     String btnScrollUpArrow = "//a[@id='scrollUp']";
     String txtFullFledgedBanner = "//h2[contains(text(),'Full-Fledged') or contains(text(),'practice website')]";
     String txtSubscription = "//h2[normalize-space()='Subscription']";
+
+    String btnHome = "//a[contains(text(), 'Home')]";
 }

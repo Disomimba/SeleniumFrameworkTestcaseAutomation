@@ -32,9 +32,9 @@ public class TestCases extends BaseTest {
     cartPageEvents cartPageEvents = new cartPageEvents();
 
     @BeforeTest(alwaysRun = true)
-    @Parameters({"browser"})
+    @Parameters({ "browser" })
     // public void prepareReport(@Optional("chrome") String browser) {
-    public void prepareReport(@Optional("edge") String browser) {
+    public void prepareReport(@Optional("chrome") String browser) {
         this.browser = browser;
         beforeTestMethod(browser);
     }
@@ -44,6 +44,7 @@ public class TestCases extends BaseTest {
         initializeBrowser(browser, testMethod);
     }
 
+    
     @Test(priority = 1)
     public void tc_01_Register() {
         registerDetails = new Hashtable<>();
@@ -60,47 +61,45 @@ public class TestCases extends BaseTest {
         registerDetails.put("state", "Metro Manila");
         registerDetails.put("postalCode", "4114");
         registerDetails.put("phone", "09121234567");
+        mainPage.verifyPageUrl("home");
         registerPage.register(registerDetails);
+        loginPage.deleteAccount();
     }
 
     @Test(priority = 2)
     public void tc_02_Login() {
+        registerPage.register(registerDetails);
+        loginPage.logout();
+        mainPage.clickTab("home");
+
         loginPage.login(registerDetails);
-        loginPage.deleteAccount(); // Explicitly delete account for TC 02
+        loginPage.deleteAccount();
     }
 
     @Test(priority = 3)
     public void tc_03_incorrectEmailPass() {
-        if (registerDetails == null) {
-            tc_01_Register();
-        }
-        loginPage.reLogin(registerDetails);
+        loginPage.wrongEmailPass();
     }
 
     @Test(priority = 4)
     public void tc_04_accountLogout() {
-        tc_01_Register();
-        // FIXED: Force logout via URL so Google Ad overlays cannot intercept the click
-        driver.get(utils.Constants.url + "logout");
-        loginPage.logout(registerDetails.get("email"), registerDetails.get("password"));
+        loginPage.logout("Async Co", "AutomationOfGroup@Async.co", "passwordAsyncCo");
     }
 
     @Test(priority = 5)
     public void tc_05_regExistingEmail() {
-        if (registerDetails == null) {
-            tc_01_Register();
-        }
-        registerPage.regExistingEmail(registerDetails.get("name"), registerDetails.get("email"));
+        registerPage.regExistingEmail("AsyncCo TwoPointOw", "AutomationOfGroup@Async.co");
     }
 
     @Test(priority = 6)
     public void tc_06_contactForm() {
-        contactPage.fillContactForm("Hakdog", "hakdog@gg.com", "Test Message", "Hello! This is Test message from Hakdog");
+        contactPage.fillContactForm("Async Co Group", "AutomationOfGroup@Async.co", "AsynCo Pero gusto Uno",
+                "Hello! This is Test message from Async Co. Sana Maka uno kaming Group");
     }
 
     @Test(priority = 7)
     public void tc_07_testcases() {
-        mainPage.clickTestCaseTab();
+        mainPage.clickTab("test_cases");
     }
 
     @Test(priority = 8)
@@ -136,24 +135,33 @@ public class TestCases extends BaseTest {
     @Test(priority = 14)
     public void tc_14_placeOrderRegWhileCheckout() {
         products.placeOrderRegWhileCheckout();
-        tc_01_Register();
-        mainPage.clickCartTab();
-        products.proceedToCheckout("I need this tomorrow, Deliver it fast.", "Name Test", "12394321", "135", "12", "2025");
+        registerPage.register();
+        mainPage.clickTab("cart");
+        products.proceedToCheckout(
+            "I need this tomorrow, Deliver it fast.", 
+            "Name Test", 
+            "12394321", 
+            "135", 
+            "12",
+            "2025");
+        loginPage.deleteAccount();
     }
 
     @Test(priority = 15)
     public void tc_15_regToCheckout() {
-        tc_01_Register();
+        registerPage.register(registerDetails);
         products.regBeforeCheckout();
-        products.proceedToCheckout("I need this tomorrow, Deliver it fast.", "Name Test", "12394321", "135", "12", "2025");
+        products.proceedToCheckout("I need this tomorrow, Deliver it fast.", "Name Test", "12394321", "135", "12",
+                "2025");
+
+        loginPage.deleteAccount();
     }
 
     @Test(priority = 16)
     public void tc_16_loginBeforeCheckout() {
-        tc_01_Register();
-        driver.get(utils.Constants.url + "logout");
-        loginPage.login(registerDetails);
-
+        registerPage.register();
+        loginPage.logout();
+        loginPage.login();
         products.addToCart();
         products.proceedToCheckout("Please deliver ASAP.", "Test User", "4100000000000000", "123", "12", "2028");
         loginPage.deleteAccount();
@@ -179,10 +187,9 @@ public class TestCases extends BaseTest {
     public void tc_20_searchProductsAndVerifyCartAfterLogin() {
         products.searchProduct("Dress");
         products.addSearchResultsToCart();
-        mainPage.clickCartTab();
-
-        tc_01_Register();
-        mainPage.clickCartTab();
+        mainPage.clickTab("cart");
+        loginPage.login("AutomationOfGroup@Async.co", "passwordAsyncCo");
+        mainPage.clickTab("cart");
         cartPageEvents.verifyCartPageLoaded();
     }
 
@@ -200,27 +207,26 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 23)
     public void tc_23_verifyAddressDetailsInCheckoutPage() {
-        tc_01_Register();
-        products.addToCart();
-        mainPage.clickCartTab();
-        cartPageEvents.clickViewCartButton();
-
+        registerPage.register();
+        loginPage.verifyUsername("Async Corp");
+        products.addToCart_tc_23();
         cartPageEvents.verifyAddressDetailsMatch("123 Test Way");
         loginPage.clickDeleteButton();
     }
 
     @Test(priority = 24)
     public void tc_24_downloadInvoiceAfterPurchaseOrder() {
-        tc_01_Register();
-        products.addToCart();
-        mainPage.clickCartTab();
-
+        products.addToCart_tc_23();
+        cartPageEvents.clickViewCartButton();
+        registerPage.register();
+        loginPage.verifyUsername("Async Corp");
+        mainPage.clickTab("cart");
         cartPageEvents.clickProceedToCheckout();
+        cartPageEvents.verifyAddressDetailsMatch("123 Test Way");
         cartPageEvents.enterCommentAndPlaceOrder("Order for Invoice Test");
         cartPageEvents.enterPaymentDetailsAndSubmit("Test Card", "4100000000000000", "123", "01", "2030");
-
         cartPageEvents.downloadInvoice();
-        loginPage.deleteAccount(); 
+        loginPage.deleteAccount();
     }
 
     @Test(priority = 25)

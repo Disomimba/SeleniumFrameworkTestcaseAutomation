@@ -160,6 +160,8 @@ import utils.ElementFetch;
 	        options.addArguments("--disable-gpu");
 	        options.addArguments("disable-infobars");
 	        options.addArguments("--disable-extensions");
+			options.addArguments("--host-rules=MAP pagead2.googlesyndication.com 127.0.0.1, MAP ad.doubleclick.net 127.0.0.1, MAP www.googleadservices.com 127.0.0.1");
+			options.addArguments("--disable-notifications");
 	        options.setCapability("acceptInsecureCerts",true);
 			// WebDriverManager.chromedriver().setup();
 			driver= new ChromeDriver(options);

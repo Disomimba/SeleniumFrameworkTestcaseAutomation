@@ -6,69 +6,102 @@ import org.testng.Assert;
 
 public class mainPageEvents extends BaseTest {
 
-    public void clickLoginSignupTab() {
-        logger.info("Click Login/Signup tab");
-        // FIXED: Catch exception if ad blocks button or if already logged in
-        try {
+public void clickTab(String tab){
+
+    switch(tab.toLowerCase()){
+
+        case "home":
+            click(mainPageElements.btnHome);
+            break;
+
+        case "cart":
+            click(mainPageElements.tabCart);
+            break;
+
+        case "contact":
+            click(mainPageElements.tabContactUs);
+            break;
+
+        case "products":
+            click(mainPageElements.tabProducts);
+            break;
+
+        case "login":
             click(mainPageElements.tabLoginSignup);
-        } catch (Exception e) {
-            driver.get(utils.Constants.url + "login");
-        }
-        try { Thread.sleep(1000); } catch (Exception e) {}
-        if (driver.getCurrentUrl().contains("google_vignette") || !driver.getCurrentUrl().contains("login")) {
-            driver.get(utils.Constants.url + "login");
-        }
-        Assert.assertTrue(driver.getCurrentUrl().contains("login"),
-                "User was not redirected to Login/Signup page.");
-    }
+            break;
 
-    public void clickContactUs() {
-        logger.info("Click Contact Us tab");
-        click(mainPageElements.tabContactUs);
-        try { Thread.sleep(1000); } catch (Exception e) {}
-        if (driver.getCurrentUrl().contains("google_vignette") || !driver.getCurrentUrl().contains("contact")) {
-            driver.get(utils.Constants.url + "contact_us");
-        }
-        Assert.assertTrue(driver.getCurrentUrl().contains("contact"),
-                "User was not redirected to Contact Us page.");
-    }
+        case "test_cases":
+            click(mainPageElements.tabTestCases);
+            
+            break;
 
-    public void clickTestCaseTab() {
-        logger.info("Click Test Cases tab");
-        click(mainPageElements.tabTestCases);
-        logger.info("Test Cases tab Clicked");
+        default:
     }
+}
+public void verifyPageUrl(String page) {
+    
+    switch (page.toLowerCase()) {
+        
+        case "home":
+            Assert.assertEquals(driver.getCurrentUrl(), "https://automationexercise.com/", "Home page URL does not match!");
+            logger.info("Verified that home page is visible successfully");
+            break;
+            
+        case "login":
+            Assert.assertTrue(driver.getCurrentUrl().contains("login"), "User was not navigated to the login page!");
+            logger.info("Verified user is navigated to login page");
+            break;
+            
+        case "cart":
+            Assert.assertTrue(driver.getCurrentUrl().contains("view_cart"), "User was not navigated to the Cart page!");
+            logger.info("Verified cart page is displayed successfully");
+            break;
+            
+        case "contact":
+            Assert.assertTrue(driver.getCurrentUrl().contains("contact_us"), "User was not navigated to the contact page!");
+            logger.info("Verified user is navigated to contact page");
+            break;
 
-    public void clickProductsTab() {
-        logger.info("Click Products tab");
-        click(mainPageElements.tabProducts);
-        try { Thread.sleep(1000); } catch (Exception e) {}
-        if (driver.getCurrentUrl().contains("google_vignette") || !driver.getCurrentUrl().contains("products")) {
-            driver.get(utils.Constants.url + "products");
-        }
-        logger.info("Products tab Clicked");
+        case "test_cases":
+            Assert.assertTrue(driver.getCurrentUrl().contains("test_cases"), "User was not navigated to the Test Cases page!");
+            logger.info("Verified user is navigated to test cases page successfully");
+            break;
+
+        case "products":
+            Assert.assertTrue(driver.getCurrentUrl().contains("products"), "User was not navigated to the Products page!");
+            logger.info("Verified user is navigated to ALL PRODUCTS page successfully");
+            break;
+        
+        case "product_details":
+            
+            Assert.assertTrue(driver.getCurrentUrl().contains("product_details"), "User is not on the product details page!");
+            logger.info("Verified user landed on product detail page");
+            break;
+
+        default:
+            // This is a safety net. If you accidentally pass a typo like verifyPageUrl("hom"), 
+            // it will instantly fail the test and tell you why.
+            Assert.fail("The page requested ('" + page + "') is not defined in the verifyPageUrl method.");
+            break;
     }
+}
+    
+public void subscribe(String email) {
+        
+        verifyPageUrl("home");
 
-    public void subscribe(String email) {
+        logger.info("Scrolled down to the footer");
+
+        assertElementIsDisplayed("//h2[normalize-space()='Subscription']");
+        logger.info("Verified text 'SUBSCRIPTION' is visible in the footer");
+
+        logger.info("Subscribing with email: " + email);
         clear(mainPageElements.txtSubscribeEmail);
         sendKeys(mainPageElements.txtSubscribeEmail, email);
         click(mainPageElements.btnSubscribe);
-        logger.info("Subscribed");
-    }
-
-    public void clickCartTab() {
-        logger.info("Click Cart Tab");
-        click(mainPageElements.tabCart);
-        try { Thread.sleep(1000); } catch (Exception e) {}
-        if (driver.getCurrentUrl().contains("google_vignette") || !driver.getCurrentUrl().contains("view_cart")) {
-            driver.get(utils.Constants.url + "view_cart");
-        }
-        logger.info("Cart Tab Clicked");
-    }
-
-    public void viewProduct() {
-        click(mainPageElements.btnViewProduct);
-        logger.info("View Product Clicked");
+        
+        assertElementIsDisplayed("//div[contains(text(), 'You have been successfully subscribed!')]");
+        logger.info("Verified success message 'You have been successfully subscribed!' is visible");
     }
 
     public void navigateCategories() {
