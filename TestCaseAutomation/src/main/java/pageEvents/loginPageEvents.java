@@ -15,6 +15,18 @@ public class loginPageEvents extends BaseTest {
         click(loginPageElements.btnSubmit);
 
     }
+    
+    public void loginWithCheck() {
+        logger.info("Navigating to login page");
+        mainPage.clickTab("login");
+        logger.info("Filling in default Username and password");
+        sendKeys(loginPageElements.txtEmail, "async@gmail.com");
+        sendKeys(loginPageElements.txtPassword, "passwordAsyncCo");
+        
+        logger.info("Clicked login button");
+        click(loginPageElements.btnSubmit);
+
+    }
     //Para sa Test case 20 need Mag login
     public void login(String email, String password) {
         mainPage.clickTab("login");

@@ -3,6 +3,7 @@ package pageEvents;
 import java.util.Hashtable;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import base.BaseTest;
 import pageObjects.cartPageElements;
@@ -19,6 +20,8 @@ public class productsEventPage extends BaseTest {
         mainPage.verifyPageUrl("home");
 
         mainPage.clickTab("products");
+        WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(5));
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.urlContains("products"));
         mainPage.verifyPageUrl("products");
 
         assertElementIsDisplayed("//div[@class='features_items']");
@@ -27,6 +30,7 @@ public class productsEventPage extends BaseTest {
         click(productsPageElements.btnViewProduct);
         logger.info("View Product Clicked for the first product");
         
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.urlContains("product_details"));
         mainPage.verifyPageUrl("product_details");
 
         logger.info("Verifying all product details are visible on the page...");
@@ -229,17 +233,30 @@ public void searchProduct(String product) {
 
     public void navigateBrands() {
         mainPage.clickTab("products");
+
+        assertElementIsDisplayed(productsPageElements.brandPolo);
+        logger.info("Verified that Brands are visible on left side bar");
+
         logger.info("Clicking Polo Brand");
         assertElementIsDisplayed(productsPageElements.brandPolo);
         click(productsPageElements.brandPolo);
+        Assert.assertTrue(driver.getCurrentUrl().contains("brand_products/Polo"), "Failed to load Polo brand page");
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("brand_products"), "Failed to load Polo brand page");
+        String poloTitleText = driver.findElement(By.xpath(mainPageElements.categoryTitle)).getText();
+        String cleanPoloTitle = poloTitleText.replaceAll("\\s+", " ").trim().toUpperCase();
+        Assert.assertEquals(cleanPoloTitle, "BRAND - POLO PRODUCTS", "Polo brand title mismatch!");
+        logger.info("Verified that user is navigated to brand page and brand products are displayed");
 
         logger.info("Clicking H&M Brand");
-        assertElementIsDisplayed(productsPageElements.brandHnM);
-        
+        assertElementIsDisplayed(productsPageElements.brandHnM); 
         click(productsPageElements.brandHnM);
         Assert.assertTrue(driver.getCurrentUrl().contains("brand_products"), "Failed to load H&M brand page");
+
+        String hnmTitleText = driver.findElement(By.xpath(mainPageElements.categoryTitle)).getText();
+        String cleanHnmTitle = hnmTitleText.replaceAll("\\s+", " ").trim().toUpperCase();
+        Assert.assertEquals(cleanHnmTitle, "BRAND - H&M PRODUCTS", "H&M brand title mismatch!");
+
+        logger.info("Verified that user is navigated to that brand page and can see products");
     }
 
     public void submitProductReview(String name, String email, String review) {

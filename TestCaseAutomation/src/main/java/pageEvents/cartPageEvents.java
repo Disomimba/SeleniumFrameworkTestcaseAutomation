@@ -1,5 +1,6 @@
 package pageEvents;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import base.BaseTest;
 import pageObjects.cartPageElements;
@@ -55,6 +56,11 @@ public class cartPageEvents extends BaseTest {
         Assert.assertTrue(BaseTest.driver.getCurrentUrl().contains(cartPageElements.CART_URL_ENDPOINT), "Cart page not loaded after login");
     }
 
+    public void verifyProductDisplayedInCart() {
+        assertElementIsDisplayed(cartPageElements.cartTableRow);
+        logger.info("Verified that product is displayed in cart page");
+    }
+
     public void clickViewCartButton() {
         logger.info("Clicking on Checkout Button");
         click(pageObjects.cartPageElements.btnProceedToCheckout);
@@ -98,6 +104,9 @@ public class cartPageEvents extends BaseTest {
         logger.info("Submitting order");
         click(cartPageElements.btnSubmitOrder);
     }
+
+
+
 
 
 }

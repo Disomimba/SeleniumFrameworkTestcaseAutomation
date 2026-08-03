@@ -1,5 +1,7 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
+
 public interface cartPageElements {
     String txtSubscribe = "//input[@id='susbscribe_email']";
     String btnSubscribe = "//button[@id='subscribe']";
@@ -24,4 +26,6 @@ public interface cartPageElements {
     String txtBillingAddress = "//ul[@id='address_invoice']//li[contains(@class,'address_address1')]";
 
     String CART_URL_ENDPOINT = "view_cart";
+
+    String cartTableRow = "//table[@id='cart_info_table']//tbody/tr";
 }

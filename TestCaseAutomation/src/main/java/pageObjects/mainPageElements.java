@@ -1,5 +1,7 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
+
 public interface mainPageElements {
     // Login or Signup Button
     String tabLoginSignup = "//a[normalize-space()='Signup / Login']";
@@ -24,4 +26,9 @@ public interface mainPageElements {
     String txtSubscription = "//h2[normalize-space()='Subscription']";
 
     String btnHome = "//a[contains(text(), 'Home')]";
+
+    String leftSidebar = "//div[@class='left-sidebar']";
+    String categoryTitle = "//h2[contains(@class,'title') and contains(@class,'text-center')]";
+
+    String recommendedTitle = "//div[@class='recommended_items']//h2[contains(@class,'title')]";
 }

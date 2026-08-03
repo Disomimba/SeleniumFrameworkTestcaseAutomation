@@ -24,6 +24,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -199,8 +200,34 @@ import utils.ElementFetch;
 			break;
 			
 		case "edge":
+			EdgeOptions edgeOptions = new EdgeOptions();
+			
+			edgeOptions.addArguments("-inprivate");
+			edgeOptions.addArguments("window-size=1980x1080");
+			edgeOptions.addArguments("--window-position=-2400,-2400");
+			edgeOptions.addArguments("--disable-gpu"); 
+	        edgeOptions.addArguments("--no-sandbox"); 
+	        edgeOptions.addArguments("--disable-dev-shm-usage"); 
+	        edgeOptions.addArguments("-disable-site-isolation-trials");
+	        edgeOptions.addArguments("--lang=en");
+	        edgeOptions.addArguments("--disable-web-security");
+	        edgeOptions.addArguments("--allow-running-insecure-content");
+	        edgeOptions.addArguments("--disable-gpu");
+	        edgeOptions.addArguments("disable-infobars");
+	        edgeOptions.addArguments("--disable-extensions");
+	        edgeOptions.addArguments("--lang=en");
+	        edgeOptions.addArguments("--disable-web-security");
+	        edgeOptions.addArguments("--allow-running-insecure-content");
+	        edgeOptions.addArguments("--disable-gpu");
+	        edgeOptions.addArguments("disable-infobars");
+	        edgeOptions.addArguments("--disable-extensions");
+			edgeOptions.addArguments("--host-rules=MAP pagead2.googlesyndication.com 127.0.0.1, MAP ad.doubleclick.net 127.0.0.1, MAP www.googleadservices.com 127.0.0.1");
+			edgeOptions.addArguments("--disable-notifications");
+	        edgeOptions.setCapability("acceptInsecureCerts",true);
+
+	
 			// WebDriverManager.edgedriver().setup();
-			driver= new EdgeDriver();
+			driver = new EdgeDriver(edgeOptions);
 			break;
 			
 		default:

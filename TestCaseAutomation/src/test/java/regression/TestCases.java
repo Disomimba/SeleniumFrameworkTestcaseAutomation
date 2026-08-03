@@ -31,10 +31,13 @@ public class TestCases extends BaseTest {
     productsEventPage products = new productsEventPage();
     cartPageEvents cartPageEvents = new cartPageEvents();
 
+    public TestCases() {
+    }
+    
     @BeforeTest(alwaysRun = true)
     @Parameters({ "browser" })
     // public void prepareReport(@Optional("chrome") String browser) {
-    public void prepareReport(@Optional("chrome") String browser) {
+    public void prepareReport(@Optional("edge") String browser) {
         this.browser = browser;
         beforeTestMethod(browser);
     }
@@ -135,7 +138,7 @@ public class TestCases extends BaseTest {
     @Test(priority = 14)
     public void tc_14_placeOrderRegWhileCheckout() {
         products.placeOrderRegWhileCheckout();
-        registerPage.register();
+        registerPage.register(registerDetails);
         mainPage.clickTab("cart");
         products.proceedToCheckout(
             "I need this tomorrow, Deliver it fast.", 
@@ -159,9 +162,10 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 16)
     public void tc_16_loginBeforeCheckout() {
-        registerPage.register();
+        mainPage.verifyPageUrl("home");
+        registerPage.register(registerDetails);
         loginPage.logout();
-        loginPage.login();
+        loginPage.loginWithCheck();
         products.addToCart();
         products.proceedToCheckout("Please deliver ASAP.", "Test User", "4100000000000000", "123", "12", "2028");
         loginPage.deleteAccount();
@@ -169,6 +173,7 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 17)
     public void tc_17_removeProductsFromCart() {
+        mainPage.verifyPageUrl("home");
         products.addToCart();
         cartPageEvents.removeProductFromCart();
     }
@@ -180,6 +185,7 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 19)
     public void tc_19_viewBrandProducts() {
+        mainPage.verifyPageUrl("home");
         products.navigateBrands();
     }
 
@@ -200,9 +206,11 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 22)
     public void tc_22_addToCartFromRecommendedItems() {
+        mainPage.verifyPageUrl("home");
         mainPage.addRecommendedItemToCart();
         products.clickViewCartButton();
         cartPageEvents.verifyCartPageLoaded();
+        cartPageEvents.verifyProductDisplayedInCart();
     }
 
     @Test(priority = 23)
@@ -231,11 +239,13 @@ public class TestCases extends BaseTest {
 
     @Test(priority = 25)
     public void tc_25_verifyScrollUpUsingArrowButton() {
+        mainPage.verifyPageUrl("home");
         mainPage.verifyScrollUpWithArrow();
     }
 
     @Test(priority = 26)
     public void tc_26_verifyScrollUpWithoutArrowButton() {
+        mainPage.verifyPageUrl("home");
         mainPage.verifyScrollUpWithoutArrow();
     }
 

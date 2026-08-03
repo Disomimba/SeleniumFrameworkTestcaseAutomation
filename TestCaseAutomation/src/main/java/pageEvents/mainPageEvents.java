@@ -2,6 +2,8 @@ package pageEvents;
 
 import base.BaseTest;
 import pageObjects.mainPageElements;
+
+import org.openqa.selenium.By;
 import org.testng.Assert;
 
 public class mainPageEvents extends BaseTest {
@@ -105,19 +107,41 @@ public void subscribe(String email) {
     }
 
     public void navigateCategories() {
-        logger.info("Navigating Women Category");
+
+        boolean isSidebarVisible = driver.findElement(By.xpath(mainPageElements.leftSidebar)).isDisplayed();
+        Assert.assertTrue(isSidebarVisible, "Left side bar categories are not visible!");
+        logger.info("Verified that categories are visible on left side bar");
+
+
+        logger.info("Click on 'Women' category and sub-category 'Dress'");
         click(mainPageElements.categoryWomen);
         click(mainPageElements.categoryWomenDress);
         Assert.assertTrue(driver.getCurrentUrl().contains("category_products"), "Failed to navigate to Women Category");
+
+        String womenTitleText = driver.findElement(By.xpath(mainPageElements.categoryTitle)).getText();
+        String cleanWomenTitle = womenTitleText.replaceAll("\\s+", " ").trim().toUpperCase();
+        Assert.assertEquals(cleanWomenTitle, "WOMEN - DRESS PRODUCTS", "Women category title mismatch!");
+        logger.info("Verified that category page is displayed and confirmed text 'WOMEN -  DRESS PRODUCTS'");
 
         logger.info("Navigating Men Category");
         click(mainPageElements.categoryMen);
         click(mainPageElements.categoryMenTshirts);
         Assert.assertTrue(driver.getCurrentUrl().contains("category_products"), "Failed to navigate to Men Category");
+
+        String menTitleText = driver.findElement(By.xpath(mainPageElements.categoryTitle)).getText();
+        Assert.assertEquals(menTitleText.trim().toUpperCase(), "MEN -  TSHIRTS PRODUCTS",
+                "Men category title mismatch!");
+        logger.info("Verified that user is navigated to that category page");
     }
 
     public void addRecommendedItemToCart() {
         logger.info("Scrolling to recommended items and adding to cart");
+        String actualTitleText = driver.findElement(By.xpath(mainPageElements.recommendedTitle)).getText();
+        Assert.assertEquals(actualTitleText.trim().toUpperCase(), "RECOMMENDED ITEMS",
+                "Recommended items section is not visible!");
+        logger.info("Verified 'RECOMMENDED ITEMS' are visible");
+         
+        logger.info("Clicking on 'Add To Cart' on Recommended product");
         assertElementIsDisplayed(mainPageElements.btnAddToCartRecommended);
         click(mainPageElements.btnAddToCartRecommended);
     }
@@ -125,9 +149,11 @@ public void subscribe(String email) {
     public void verifyScrollUpWithArrow() {
         logger.info("Scrolling to bottom of page");
         assertElementIsDisplayed(mainPageElements.txtSubscription);
-        try { Thread.sleep(1000); } catch (Exception e) {}
+        logger.info("Verified 'SUBSCRIPTION' is visible");
+        
+        logger.info("Click on arrow at bottom right side to move upward");
         click(mainPageElements.btnScrollUpArrow);
-        try { Thread.sleep(1000); } catch (Exception e) {}
+
         assertElementIsDisplayed(mainPageElements.txtFullFledgedBanner);
         logger.info("Successfully scrolled up using arrow button");
     }
@@ -135,6 +161,7 @@ public void subscribe(String email) {
     public void verifyScrollUpWithoutArrow() {
         logger.info("Scrolling to bottom of page");
         assertElementIsDisplayed(mainPageElements.txtSubscription);
+        logger.info("Verified 'SUBSCRIPTION' is visible");
         assertElementIsDisplayed(mainPageElements.txtFullFledgedBanner);
         logger.info("Successfully scrolled up without arrow button");
     }
