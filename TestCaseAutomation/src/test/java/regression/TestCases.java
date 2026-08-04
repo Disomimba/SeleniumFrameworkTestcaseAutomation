@@ -17,7 +17,6 @@ import base.BaseTest;
 import pageEvents.contactPageEvents;
 import pageEvents.loginPageEvents;
 import pageEvents.registerPageEvents;
-import pageObjects.cartPageElements;
 import pageEvents.mainPageEvents;
 import pageEvents.productsEventPage;
 import pageEvents.cartPageEvents;
@@ -38,7 +37,7 @@ public class TestCases extends BaseTest {
     @BeforeTest(alwaysRun = true)
     @Parameters({ "browser" })
     // public void prepareReport(@Optional("chrome") String browser) {
-    public void prepareReport(@Optional("edge") String browser) {
+    public void prepareReport(@Optional("chrome") String browser) {
         this.browser = browser;
         beforeTestMethod(browser);
     }
