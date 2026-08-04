@@ -27,7 +27,7 @@ Ensure you have the following software installed on your computer:
 
 **System Variable Setup (Windows):**
 * Add a new System Variable named `JAVA_HOME` with the value pointing to your JDK folder (e.g., `C:\Program Files\Java\jdk-21`).
-* Add a new System Variable named `MAVEN_HOME` with the value pointing to your extracted Maven folder (e.g., `C:\Users\Edmundo Dela Cruz\Downloads\apache-maven-3.9.11-bin\apache-maven-3.9.11`).
+* Add a new System Variable named `MAVEN_HOME` with the value pointing to your extracted Maven folder (e.g., `C:\Program Files\Maven\apache-maven-3.9.11-bin\apache-maven-3.9.11`).
 * Edit the `Path` variable and add:
   * `%JAVA_HOME%\bin`
   * `%MAVEN_HOME%\bin`
