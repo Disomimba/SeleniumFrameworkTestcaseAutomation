@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -200,34 +201,22 @@ import utils.ElementFetch;
 			break;
 			
 		case "edge":
-			EdgeOptions edgeOptions = new EdgeOptions();
-			
-			edgeOptions.addArguments("-inprivate");
-			edgeOptions.addArguments("window-size=1980x1080");
-			edgeOptions.addArguments("--window-position=-2400,-2400");
-			edgeOptions.addArguments("--disable-gpu"); 
-	        edgeOptions.addArguments("--no-sandbox"); 
-	        edgeOptions.addArguments("--disable-dev-shm-usage"); 
-	        edgeOptions.addArguments("-disable-site-isolation-trials");
-	        edgeOptions.addArguments("--lang=en");
-	        edgeOptions.addArguments("--disable-web-security");
-	        edgeOptions.addArguments("--allow-running-insecure-content");
-	        edgeOptions.addArguments("--disable-gpu");
-	        edgeOptions.addArguments("disable-infobars");
-	        edgeOptions.addArguments("--disable-extensions");
-	        edgeOptions.addArguments("--lang=en");
-	        edgeOptions.addArguments("--disable-web-security");
-	        edgeOptions.addArguments("--allow-running-insecure-content");
-	        edgeOptions.addArguments("--disable-gpu");
-	        edgeOptions.addArguments("disable-infobars");
-	        edgeOptions.addArguments("--disable-extensions");
-			edgeOptions.addArguments("--host-rules=MAP pagead2.googlesyndication.com 127.0.0.1, MAP ad.doubleclick.net 127.0.0.1, MAP www.googleadservices.com 127.0.0.1");
-			edgeOptions.addArguments("--disable-notifications");
-	        edgeOptions.setCapability("acceptInsecureCerts",true);
-
-	
 			// WebDriverManager.edgedriver().setup();
-			driver = new EdgeDriver(edgeOptions);
+			EdgeOptions edgeOptions = new EdgeOptions();
+
+			// 1. Anti-Bot / Stealth Settings (Bypasses "Please wait while your request is being verified")
+			edgeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
+			edgeOptions.setExperimentalOption("useAutomationExtension", false);
+			edgeOptions.addArguments("--disable-blink-features=AutomationControlled");
+
+			// 2. Browser Environment & Ads Blocking
+			edgeOptions.addArguments("-inprivate"); // Runs in Private Mode to isolate cookies/cache
+			edgeOptions.addArguments("start-maximized");
+			edgeOptions.addArguments("--disable-notifications");
+			edgeOptions.addArguments("--host-rules=MAP pagead2.googlesyndication.com 127.0.0.1, MAP ad.doubleclick.net 127.0.0.1, MAP www.googleadservices.com 127.0.0.1");
+			edgeOptions.setCapability("acceptInsecureCerts", true);
+			
+			driver= new EdgeDriver(edgeOptions);
 			break;
 			
 		default:
@@ -336,15 +325,12 @@ import utils.ElementFetch;
     public void assertElementIsDisplayed(String webElement) {
         try {
             // Locate the element
-            WebElement element = driver.findElement(By.xpath(webElement));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(webElement)));
 
             // Scroll to the element using JavaScript
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", element);
-
-            // Use explicit wait to ensure the element is visible after scrolling
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.visibilityOf(element));
 
             // Assert that the element is displayed
             assertTrue(element.isDisplayed(), "The element is not displayed.");

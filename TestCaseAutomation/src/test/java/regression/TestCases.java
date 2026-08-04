@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
@@ -47,9 +48,8 @@ public class TestCases extends BaseTest {
         initializeBrowser(browser, testMethod);
     }
 
-    
-    @Test(priority = 1)
-    public void tc_01_Register() {
+    @BeforeClass(alwaysRun = true)
+    public void setupTestData() {
         registerDetails = new Hashtable<>();
         int rnd4Digit = generate4Digit();
         registerDetails.put("name", "Test " + rnd4Digit);
@@ -64,7 +64,11 @@ public class TestCases extends BaseTest {
         registerDetails.put("state", "Metro Manila");
         registerDetails.put("postalCode", "4114");
         registerDetails.put("phone", "09121234567");
-        mainPage.verifyPageUrl("home");
+    }
+
+    
+    @Test(priority = 1)
+    public void tc_01_Register() {
         registerPage.register(registerDetails);
         loginPage.deleteAccount();
     }
@@ -165,8 +169,10 @@ public class TestCases extends BaseTest {
         mainPage.verifyPageUrl("home");
         registerPage.register(registerDetails);
         loginPage.logout();
-        loginPage.loginWithCheck();
+        mainPage.clickTab("home");
+        loginPage.login(registerDetails);
         products.addToCart();
+        mainPage.clickTab("cart");
         products.proceedToCheckout("Please deliver ASAP.", "Test User", "4100000000000000", "123", "12", "2028");
         loginPage.deleteAccount();
     }

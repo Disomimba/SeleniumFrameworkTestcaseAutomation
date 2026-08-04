@@ -37,11 +37,11 @@
 	</dependency>
   </dependencies>
    <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<aspectj.version>1.8.10</aspectj.version>
-		<suiteFile></suiteFile>
-
-	</properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aspectj.version>1.8.10</aspectj.version>
+        <!-- Add the actual filename here -->
+        <suiteFile>testng.xml</suiteFile>
+    </properties>
 	<build>
 		<plugins>
 			<plugin>

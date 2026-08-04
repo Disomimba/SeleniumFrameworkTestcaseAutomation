@@ -129,7 +129,7 @@ public void subscribe(String email) {
         Assert.assertTrue(driver.getCurrentUrl().contains("category_products"), "Failed to navigate to Men Category");
 
         String menTitleText = driver.findElement(By.xpath(mainPageElements.categoryTitle)).getText();
-        Assert.assertEquals(menTitleText.trim().toUpperCase(), "MEN -  TSHIRTS PRODUCTS",
+        Assert.assertEquals(menTitleText.trim().toUpperCase(), "MEN - TSHIRTS PRODUCTS",
                 "Men category title mismatch!");
         logger.info("Verified that user is navigated to that category page");
     }

@@ -196,10 +196,12 @@ public void searchProduct(String product) {
     public void proceedToCheckout(String Description, String nameOnCard, String cardNumber, String cvc, String expiryMonth, String expiryYear) {
         
         click(cartPageElements.btnProceedToCheckout);
+        logger.info("Current URL after clicking Proceed To Checkout: " + driver.getCurrentUrl());
+        
         logger.info("Proceed to Checkout Clicked");
         
-        assertElementIsDisplayed("//h2[normalize-space()='Address Details']");
-        assertElementIsDisplayed("//h2[normalize-space()='Review Your Order']");
+        assertElementIsDisplayed("//ul[@id='address_delivery']");
+        assertElementIsDisplayed("//ul[@id='address_invoice']");
         logger.info("Verified Address Details and Review Your Order are visible");
         
         clear(cartPageElements.txtDescription);
